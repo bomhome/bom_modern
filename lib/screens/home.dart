@@ -1,3 +1,4 @@
+import 'package:bom_modern/screens/register.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -31,7 +32,13 @@ class _HomeState extends State<Home> {
           'sing Up',
           style: TextStyle(color: Colors.blue[800]),
         ),
-        onPressed: () {},
+        onPressed: () {
+          print('You Sing Up');
+          //Route
+          var registerRoute =
+              MaterialPageRoute(builder: (BuildContext cintext) => Register());
+              Navigator.of(context).push(registerRoute);
+        },
       ),
     );
   }
