@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "967462204755",
+    "firebase_url": "https://bommodern.firebaseio.com",
+    "project_id": "bommodern",
+    "storage_bucket": "bommodern.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:967462204755:android:9d3083f4915e53e5",
+        "android_client_info": {
+          "package_name": "com.plastware.bom_modern"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "967462204755-v7ef8mf50nt01ctofg081uld1uchompn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7F9jwTlkifFI0vY4P1oN4NXY5_uBg3LE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "967462204755-v7ef8mf50nt01ctofg081uld1uchompn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

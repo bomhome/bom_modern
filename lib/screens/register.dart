@@ -8,6 +8,8 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   //Explict
   Color myColor = Color.fromARGB(255, 21, 101, 192);
+  final formKey = GlobalKey<FormState>();
+  String nameString, emailString, passwordString;
 
   //Method
 
@@ -28,11 +30,20 @@ class _RegisterState extends State<Register> {
         helperStyle: TextStyle(color: Colors.green),
         hintText: 'English Only',
       ),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'plase input your name';
+        }
+      },
+      onSaved: (String value) {
+        nameString = value;
+      },
     );
   }
 
-Widget emailText() {
+  Widget emailText() {
     return TextFormField(
+      keyboardType: TextInputType.emailAddress,
       style: TextStyle(color: Colors.orange[600]),
       decoration: InputDecoration(
         enabledBorder:
@@ -48,6 +59,14 @@ Widget emailText() {
         helperStyle: TextStyle(color: Colors.orange),
         hintText: 'youremail@mail.com',
       ),
+      validator: (String value) {
+        if (!((value.contains('@')) && (value.contains('.')))) {
+          return 'keep Email Format your@mail.com';
+        }
+      },
+      onSaved: (String value) {
+        emailString = value;
+      },
     );
   }
 
@@ -68,6 +87,13 @@ Widget emailText() {
         helperStyle: TextStyle(color: Colors.red),
         hintText: '6-12 char',
       ),
+      validator: (String value) {
+        if (value.length < 6) {
+          return 'password More 6 Charator';
+        }
+      },onSaved: (String value){
+        passwordString = value;
+      },
     );
   }
 
@@ -76,6 +102,10 @@ Widget emailText() {
       icon: Icon(Icons.cloud_upload),
       onPressed: () {
         print('your clicke upload');
+        if (formKey.currentState.validate()) {
+          formKey.currentState.save();
+          print('name = $nameString,email = $emailString,password = $passwordString');
+        }
       },
     );
   }
@@ -93,12 +123,15 @@ Widget emailText() {
         child: Container(
           margin: EdgeInsets.only(top: 24.0),
           width: 250.0,
-          child: Column(
-            children: <Widget>[
-              nameText(),
-              emailText(),
-              passwordText(),
-            ],
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: <Widget>[
+                nameText(),
+                emailText(),
+                passwordText(),
+              ],
+            ),
           ),
         ),
       ),
