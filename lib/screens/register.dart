@@ -1,4 +1,7 @@
+import 'package:bom_modern/screens/my_service.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -10,6 +13,7 @@ class _RegisterState extends State<Register> {
   Color myColor = Color.fromARGB(255, 21, 101, 192);
   final formKey = GlobalKey<FormState>();
   String nameString, emailString, passwordString;
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   //Method
 
@@ -91,7 +95,8 @@ class _RegisterState extends State<Register> {
         if (value.length < 6) {
           return 'password More 6 Charator';
         }
-      },onSaved: (String value){
+      },
+      onSaved: (String value) {
         passwordString = value;
       },
     );
@@ -104,8 +109,82 @@ class _RegisterState extends State<Register> {
         print('your clicke upload');
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
-          print('name = $nameString,email = $emailString,password = $passwordString');
+          print(
+              'name = $nameString,email = $emailString,password = $passwordString');
+          registerFirebase();
         }
+      },
+    );
+  }
+
+  //สร้างตัวสมัครสมาชิก
+  Future<void> registerFirebase() async {
+    //สร้าง Instace เพื่อขอข้อมูลและแสดงข้อมูล
+    //ตัวคำสั่งที่ต้องการให้ทำอะไร
+    await firebaseAuth
+        .createUserWithEmailAndPassword(
+            email: emailString, password: passwordString)
+        .then((response) {
+      print('การสมัครเสร็จสิน กรุณายืนยัน E-mail');
+      setUpDisplayName();
+    }).catchError((response) {
+      print('Error กรุณาตรวจสอบการมัครอีกครั้ง ${response.toString()}');
+      String title = response.code;
+      String message = response.message;
+      myAlert(title, message);
+    });
+  }
+
+  //  สร้างตัวแสดงชื่อผู้ใช้
+  Future<void> setUpDisplayName() async {
+    await firebaseAuth.currentUser().then((response) {
+      UserUpdateInfo userUpdateInfo = UserUpdateInfo();
+      userUpdateInfo.displayName = nameString;
+      response.updateProfile(userUpdateInfo);
+
+      var myServiceRoute = MaterialPageRoute(builder: (BuildContext context) => MyService());
+      Navigator.of(context).pushAndRemoveUntil(myServiceRoute, (Route <dynamic> route) => false);
+      
+    });
+  }
+
+  // FlatButton คือปุ่มที่ไม่มีพื้นหลัง
+  Widget alerButton() {
+    return FlatButton(
+      child: Text('OK'),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  Widget showTitle(String tileString) {
+    return ListTile(
+      leading: Icon(
+        Icons.add_alert,
+        size: 48.0,
+        color: Colors.red,
+      ),
+      title: Text(
+        tileString,
+        style: TextStyle(
+          color: Colors.red[900],
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  //ตัวแสดงการแจ้งเตือนต่างๆ
+  void myAlert(String titleString, String messageString) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: showTitle(titleString),
+          content: Text(messageString),
+          actions: <Widget>[alerButton()],
+        );
       },
     );
   }
