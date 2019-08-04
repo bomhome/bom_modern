@@ -1,4 +1,6 @@
+import 'package:bom_modern/screens/my_service.dart';
 import 'package:bom_modern/screens/register.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -10,9 +12,27 @@ class _HomeState extends State<Home> {
   //ประกาศตัวแปร
   double myWidth = 200.0;
   String nameApp = 'Terapong.Rit';
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
   // double myHeight = 200.0;
 
   //Method
+  @override
+  void initState() {
+    super.initState();
+    checkStatus();
+  }
+
+  Future <void> checkStatus()async{
+
+    FirebaseUser firebaseUser = await firebaseAuth.currentUser();
+    if (firebaseUser != null) {
+      
+      var myServiceRoute = MaterialPageRoute(builder: (BuildContext context) => MyService());
+      Navigator.of(context).pushAndRemoveUntil(myServiceRoute, (Route <dynamic> route) => false);
+
+    }
+  }
 
   Widget mySizeBox() {
     return SizedBox(
@@ -37,7 +57,7 @@ class _HomeState extends State<Home> {
           //Route
           var registerRoute =
               MaterialPageRoute(builder: (BuildContext cintext) => Register());
-              Navigator.of(context).push(registerRoute);
+          Navigator.of(context).push(registerRoute);
         },
       ),
     );
