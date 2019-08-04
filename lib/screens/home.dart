@@ -1,3 +1,4 @@
+import 'package:bom_modern/screens/authen.dart';
 import 'package:bom_modern/screens/my_service.dart';
 import 'package:bom_modern/screens/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +12,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   //ประกาศตัวแปร
   double myWidth = 200.0;
-  String nameApp = 'Terapong.Rit';
+  String nameApp = 'Fultter workshop';
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   // double myHeight = 200.0;
@@ -74,7 +75,10 @@ class _HomeState extends State<Home> {
           'Sing In',
           style: TextStyle(color: Colors.white),
         ),
-        onPressed: () {},
+        onPressed: () {
+          var authenRoute = MaterialPageRoute(builder: (BuildContext context) => Authen());
+          Navigator.of(context).push(authenRoute);
+        },
       ),
     );
   }
